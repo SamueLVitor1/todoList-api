@@ -9,15 +9,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "task")
 public class Task {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descricao;
-    private Boolean concluida = false;
+    private String description;
+    private Boolean completed = false;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private User usuario;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

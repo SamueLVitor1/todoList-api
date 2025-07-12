@@ -11,19 +11,20 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "app_user")
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String name;
 
     @Column(unique = true)
     private String email;
 
-    private String senha;
+    private String password;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Task> tarefas;
-
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 }
