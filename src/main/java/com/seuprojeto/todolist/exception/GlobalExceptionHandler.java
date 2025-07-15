@@ -12,6 +12,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(409).body(e.getMessage());
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException e){
+        return ResponseEntity.status(401).body(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericExpection(Exception e){
         return  ResponseEntity.status(500).body("Erro interno no servidor.");
