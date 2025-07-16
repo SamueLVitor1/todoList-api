@@ -8,8 +8,8 @@ import com.seuprojeto.todolist.model.User;
 import com.seuprojeto.todolist.repository.TaskRepository;
 import com.seuprojeto.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +70,13 @@ public class TaskService {
         Task updated = taskRepository.save(t);
 
         return new TaskResponseDTO(updated.getId(), updated.getDescription(), updated.getCompleted());
+    }
 
+    public long countCompletedTasks(Long userId){
+        return taskRepository.countByUserIdAndCompletedTrue(userId);
+    }
+
+    public long countIncompletedTasks(Long userId){
+        return taskRepository.countByUserIdAndCompletedFalse(userId);
     }
 }

@@ -9,4 +9,8 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByUserId(Long userId);
+
+    long countByUserIdAndCompletedTrue(Long userId);
+    long countByUserIdAndCompletedFalse(Long userId);
+
 }

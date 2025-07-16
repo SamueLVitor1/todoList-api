@@ -53,4 +53,16 @@ public class TaskController {
         return  taskService.updateTaskAllFields(currentUserId(), id, taskRequestDTO);
     }
 
+    @GetMapping("/completed/count")
+    public ResponseEntity<Long> countCompleted(){
+        long count = taskService.countCompletedTasks(currentUserId());
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/incompleted/count")
+    public ResponseEntity<Long> counIncompleted(){
+        long count = taskService.countIncompletedTasks(currentUserId());
+        return ResponseEntity.ok(count);
+    }
+
 }
