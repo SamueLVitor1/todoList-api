@@ -2,6 +2,7 @@ package com.seuprojeto.todolist.service;
 
 import com.seuprojeto.todolist.dto.TaskRequestDTO;
 import com.seuprojeto.todolist.dto.TaskResponseDTO;
+import com.seuprojeto.todolist.exception.ResourceNotFoundException;
 import com.seuprojeto.todolist.model.Task;
 import com.seuprojeto.todolist.model.User;
 import com.seuprojeto.todolist.repository.TaskRepository;
@@ -44,9 +45,31 @@ public class TaskService {
     public TaskResponseDTO updateTaskStatus(Long userId, Long taskId, Boolean completed){
         Task t = taskRepository.findById(taskId)
                 .filter(task -> task.getUser().getId().equals(userId))
-                .orElseThrow(() -> new ResourceAccessException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         t.setCompleted(completed);
         Task updated = taskRepository.save(t);
         return  new TaskResponseDTO(updated.getId(), updated.getDescription(), updated.getCompleted());
+    }
+
+    public TaskResponseDTO updateTaskAllFields(Long userId,
+                                               Long taskId,
+                                               TaskRequestDTO taskRequestDTO){
+        Task t = taskRepository.findById(taskId)
+                .filter(task -> task.getUser().getId().equals(userId))
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        t.setDescription(taskRequestDTO.getDescription() != null ?
+                taskRequestDTO.getDescription()
+                : t.getDescription());
+
+        t.setCompleted(taskRequestDTO.getCompleted() != null ?
+                taskRequestDTO.getCompleted()
+                : t.getCompleted()
+        );
+
+        Task updated = taskRepository.save(t);
+
+        return new TaskResponseDTO(updated.getId(), updated.getDescription(), updated.getCompleted());
+
     }
 }

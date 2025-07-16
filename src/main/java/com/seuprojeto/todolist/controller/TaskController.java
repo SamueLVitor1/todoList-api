@@ -47,4 +47,10 @@ public class TaskController {
                 );
     }
 
+    @PutMapping("/{id}")
+    public  TaskResponseDTO updtateAll(@PathVariable Long id,
+                                       @RequestBody TaskRequestDTO taskRequestDTO){
+        return  taskService.updateTaskAllFields(currentUserId(), id, taskRequestDTO);
+    }
+
 }
