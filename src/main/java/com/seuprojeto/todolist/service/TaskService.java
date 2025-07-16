@@ -8,6 +8,7 @@ import com.seuprojeto.todolist.repository.TaskRepository;
 import com.seuprojeto.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +39,14 @@ public class TaskService {
 
         Task saved = taskRepository.save(task);
         return new TaskResponseDTO(saved.getId(), saved.getDescription(), saved.getCompleted());
+    }
+
+    public TaskResponseDTO updateTaskStatus(Long userId, Long taskId, Boolean completed){
+        Task t = taskRepository.findById(taskId)
+                .filter(task -> task.getUser().getId().equals(userId))
+                .orElseThrow(() -> new ResourceAccessException("Task not found"));
+        t.setCompleted(completed);
+        Task updated = taskRepository.save(t);
+        return  new TaskResponseDTO(updated.getId(), updated.getDescription(), updated.getCompleted());
     }
 }
